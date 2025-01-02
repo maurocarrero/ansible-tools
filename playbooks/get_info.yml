@@ -1,0 +1,27 @@
+---
+- name: "Get Information"
+  hosts: localvms
+  tasks:
+    - name: "Get OS Release"
+      command: "cat /etc/redhat-release"
+      register: red_hat_release
+    - name: "Get Kernel Release"
+      command: "uname -r"
+      register: uname_r
+    - name: "Get Uptime"
+      command: "uptime -p"
+      register: uptime
+    - name: "Get Memory - basic usage"
+      command: "free -m"
+      register: mem
+    - name: "Get Memory - basic usage"
+      command: "cat /proc/meminfo"
+      register: mem_detailed
+
+    - debug:
+        msg: |
+          RedHat release: {{red_hat_release.stdout}}
+          Kernel release: {{ansible_kernel}}
+          Uptime: {{uptime.stdout}}
+          Mem: {{mem.stdout}}
+          Mem Detailed: {{mem_detailed.stdout}}

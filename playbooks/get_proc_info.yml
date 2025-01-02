@@ -1,0 +1,11 @@
+---
+- name: "Get processes information"
+  hosts: localvms
+
+  tasks:
+    - name: "Get running processes"
+      shell: "ps"
+      register: ps_info
+    - debug:
+        msg: |
+          {{ps_info.stdout}}

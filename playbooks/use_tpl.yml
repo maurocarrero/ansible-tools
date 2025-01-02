@@ -1,0 +1,31 @@
+---
+- name: "Make sure webserver is running"
+  hosts: jmp
+  become: yes
+  vars:
+    webserver_message: "Hola mundo de Ansible - UPDATED!"
+
+  tasks:
+    - name: "Install Apache - httpd"
+      yum:
+        name: httpd
+        state: present
+
+    - name: "Create index.html using Jinja2 template"
+      template:
+        src: templates/jinja2.j2
+        dest: /var/www/html/index.html
+
+    - name: "Start Apache service - httpd"
+      service:
+        name: httpd
+        state: started
+      tags:
+        - start_apache
+
+    - name: "Stop Apache service - httpd"
+      service:
+        name: httpd
+        state: stopped
+      tags:
+        - stop_apache

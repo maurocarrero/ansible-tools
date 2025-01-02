@@ -1,0 +1,6 @@
+---
+- name: "Start sysstat"
+  systemd:
+    name: sysstat
+    state: started
+    enabled: yes

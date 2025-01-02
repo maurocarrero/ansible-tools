@@ -1,0 +1,22 @@
+---
+- name: "Verify installed software"
+  hosts: aws
+  become: yes
+  tasks:
+    - name: "Install stress"
+      yum:
+        name: "stress"
+        state: present
+        update_cache: yes
+      tags: stress
+
+    - name: "Install chrony"
+      yum:
+        name: "chrony"
+        state: present
+        update_cache: yes
+      tags: chrony
+
+    - name: "Start chrony process"
+      service: name=chronyd state=started enabled=yes
+      tags: chrony_start

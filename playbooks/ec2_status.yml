@@ -1,0 +1,4 @@
+---
+- name: "AWS Examples"
+  tasks:
+    - ec2_instance_info:

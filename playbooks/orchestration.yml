@@ -1,0 +1,32 @@
+---
+- name: "Orchestration example"
+  hosts: localservers
+  strategy: free
+  tasks:
+    - name: "Shutdown Server - debug"
+      debug:
+        msg: "Shutdown {{ inventory_hostname }}"
+
+    - name: "Upgrade Firmware - debug"
+      debug:
+        msg: "Upgrade firmware {{ inventory_hostname }}"
+
+    - name: "Start server - debug"
+      debug:
+        msg: "Start {{ inventory_hostname }}"
+
+    - name: "Verify server - debug"
+      debug:
+        msg: "Verify {{ inventory_hostname }}"
+
+    - name: "Notify only if server1"
+      debug:
+        msg: "Notify verify_handler from {{ inventory_hostname }}"
+      notify: verify_handler
+      when: inventory_hostname == "server1" # Only server1
+      changed_when: True                    # Ensure always change
+
+  handlers:
+    - name: verify_handler
+      debug:
+        msg: "Running verification handler due to notification from {{ inventory_hostname }}."

@@ -1,0 +1,13 @@
+---
+- name: "Update packages"
+  dnf:
+    name: '*'
+    state: latest
+    update_only: yes
+- name: "Install packages"
+  dnf:
+    name: "{{ item }}"
+    state: present
+  notify:
+    - "Start sysstat"
+  with_items: "{{ packages }}"

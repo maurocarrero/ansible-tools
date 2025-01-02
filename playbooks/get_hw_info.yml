@@ -1,0 +1,104 @@
+---
+- name: "Get Hardware Information"
+  hosts: redhat
+  become: yes
+
+  tasks:
+    - name: "Get BIOS information"
+      command: "dmidecode --type bios"
+      register: bios_info
+      tags: full
+    - name: "Debug full info"
+      debug:
+        msg: |
+          Bios information: {{bios_info.stdout}}
+      tags: full
+
+    - name: "Get System family"
+      command: "dmidecode -s system-family"
+      register: system_family
+      tags: basic
+    - name: "Get BIOS Vendor"
+      command: "dmidecode -s bios-vendor"
+      register: bios_vendor
+      tags: basic
+    - name: "Get BIOS version from sys"
+      command: "cat /sys/devices/virtual/dmi/id/bios_version"
+      register: bios_version
+      tags: basic
+    - name: "Get Sys vendor from sys"
+      command: "cat /sys/devices/virtual/dmi/id/sys_vendor"
+      register: sys_vendor
+      tags: basic
+    - debug:
+        msg: |
+          System family: {{system_family.stdout}}
+          Bios vendor: {{bios_vendor.stdout}}
+          Bios version: {{bios_version.stdout}}
+          Sys vendor: {{sys_vendor.stdout}}
+      tags: basic
+
+    - name: "Get USB info"
+      command: "lsusb"
+      register: usb_info
+      tags: usb
+    - debug:
+        msg: |
+          {{cpu_info.stdout}}
+      tags: usb
+
+    - name: "Get PCI info"
+      command: "lspci"
+      register: pci_info
+      tags: pci
+    - debug:
+        msg: |
+          PCI info:
+          {{pci_info.stdout}}
+      tags: pci
+
+    - name: "Get CPU info (lscpu)"
+      command: "lscpu"
+      register: cpu_info
+      tags: cpu
+    - debug:
+        msg: |
+          CPU info:
+          {{cpu_info.stdout}}
+      tags: cpu
+
+    - name: "Get CPU capabilities"
+      shell: "cat /proc/cpuinfo | grep 'flags'"
+      register: cpu_capabilities
+      tags: cpu_capabilities
+    - debug:
+        msg: |
+          CPU capabilities:
+          {{cpu_capabilities.stdout}}
+      tags: cpu_capabilities
+
+    - name: "Get BLOCK info"
+      shell: "lsblk"
+      register: blk_info
+      tags: blk
+    - name: "Get BLOCK ID info"
+      shell: "blkid"
+      register: blkid_info
+      tags: blk
+    - debug:
+        msg: |
+          Block information (drives and partitions):
+          {{blk_info.stdout}}
+          Block IDs:
+          {{blkid_info.stdout}}
+      tags: blk
+
+    - name: "Get FS info"
+      shell: "lsblk -f"
+      register: fs_info
+      tags: fs
+    - debug:
+        msg: |
+          File System information:
+          {{fs_info.stdout}}
+      tags: fs

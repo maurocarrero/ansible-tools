@@ -1,0 +1,9 @@
+---
+- name: "Inventory variables"
+  hosts: localservers
+  tasks:
+    - name: create_file
+      file:
+        dest: "{{ temp_file }}"
+        state: "{{ file_state }}"
+      when: temp_file is defined

@@ -1,0 +1,16 @@
+---
+- name: "Write hosts file"
+  hosts: localvms
+  become: yes
+  vars:
+    file_path: "/etc/hosts"
+  tasks:
+    - name: "Copy hosts file from template"
+      template:
+        src: templates/hosts.tpl
+        dest: /etc/hosts
+        backup: yes
+      register: tpl_result
+    - name:
+      debug:
+        var: tpl_result

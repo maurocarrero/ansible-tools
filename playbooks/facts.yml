@@ -1,0 +1,18 @@
+---
+- name: "Get facts"
+  hosts: localvms
+  serial: 1
+  tasks:
+    - name: "Show facts on {{ inventory_hostname }}"
+      debug:
+        msg: |
+          inventory_hostname: {{ inventory_hostname }}
+          ansible_hostname: {{ ansible_hostname }}
+          ansible_fqdn: {{ ansible_fqdn }}
+          ansible_distribution: {{ ansible_distribution }}
+          ansible_distribution_version: {{ ansible_distribution_version }}
+          ansible_os_family: {{ ansible_os_family }}
+          ansible_kernel: {{ ansible_kernel }}
+          ansible_architecture: {{ ansible_architecture }}
+          ansible_interfaces: {{ ansible_interfaces }}
+          ansible_default_ipv4: {{ ansible_default_ipv4.address }}

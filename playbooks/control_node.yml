@@ -1,0 +1,9 @@
+---
+- name: "Control Node"
+  hosts: localhost
+  connection: local # remove SSH overhead, for localhost is better to set it in hosts file
+  tasks:
+    - name: "Get local information"
+      debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 1 # only displayed when -vv, i.e. verbosity: 2 -- -vv

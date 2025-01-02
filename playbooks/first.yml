@@ -1,0 +1,22 @@
+---
+  - name: "My first playbook"
+    hosts: localhost
+    tasks:
+      - name: "Test reachability"
+        ping:
+      - name: "Install stress"
+        homebrew:
+          name: stress
+          state: present
+      - name: "Show facts"
+        debug:
+          msg: >
+            ansible_os_family: {{ ansible_os_family }}
+            ansible_distribution: {{ ansible_distribution }}
+            ansible_default_ipv4: {{ ansible_default_ipv4.address }}
+      - name: "Find PDF files"
+        find:
+          paths: "~/Downloads"
+          file_type: "file"
+          use_regex: "yes"
+          patterns: [ "^.*\\.pdf$" ]

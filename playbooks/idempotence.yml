@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+
+  vars:
+    source: "./jinja2.j2"
+    target: "/tmp/idempotent.state.txt"
+
+  tasks:
+    - name: "Idempotent file creation task"
+      copy:
+        src: "{{ source }}"
+        dest: "{{ target }}"
+
+    - name: "Modify the file"
+      command: "sed -ie 's/ORIGINAL/CHANGED/' {{ target }}"
+
+    - name: "Discover state"
+      command: grep "CHANGED" {{ target }}
+      register: grep_state
+      ignore_errors: true
+
+    - name: "Show the state of the file"
+      debug:
+        var: grep_state.rc
+
+    - name: "Show the state of the file"
+      debug:
+        msg: "Change is there"
+      when: grep_state.rc == 0
+
+    - name: "Show the state of the file"
+      debug:
+        msg: "Change is not there!"
+      when: grep_state.rc != 0

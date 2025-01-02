@@ -1,0 +1,23 @@
+---
+- name: "Conditional execution"
+  hosts: all_hosts
+  vars_files:
+    - secrets.yml
+  tasks:
+    - name: Upgrade in RedHat
+      when: ansible_os_family == "RedHat"
+      yum: name=* state=latest
+      become: yes
+
+    - name: Upgrade in Debian
+      when: ansible_os_family == "Debian"
+      apt: upgrade=dist update_cache=yes
+      become: yes
+      vars:
+        ansible_become_password: "{{ secrets_become_passwords[inventory_hostname] }}"
+
+#    - name: Upgrade in MacOS
+#      when: ansible_os_family == "Darwin"
+#      command: /bin/bash -c "brew update && brew upgrade"
+#      vars:
+#        ansible_become_password: "{{ secrets_become_passwords[inventory_hostname] }}"

@@ -1,0 +1,8 @@
+---
+- name: "Setup VMs"
+  become: yes
+  vars:
+    packages: [vim, stress, sysstat]
+  hosts: redhat
+  roles:
+    - "common"

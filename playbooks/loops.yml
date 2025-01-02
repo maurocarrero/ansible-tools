@@ -1,0 +1,17 @@
+---
+- name: "Install tools"
+  hosts: aws
+  become: yes
+  vars:
+    packages: [git, vim, stress]
+  tasks:
+    - name: "Install packages"
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ packages }}"
+    # Also can be done like this for apt, given that apt module allows it:
+#    - name: "Install packages again"
+#        apt:
+#          name: "{{ packages }}"
+#          state: latest

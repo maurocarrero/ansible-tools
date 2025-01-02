@@ -1,0 +1,39 @@
+---
+- name: "Loop over dictionary"
+  hosts: aws
+  vars:
+    websites:
+      aws_sites:
+        author: "mcarrero"
+        author_id: "mc001"
+      digitalocean_sites:
+        author: "fcarrero"
+        author_id: "fc001"
+      azure_sites:
+        author: "icarrero"
+        author_id: "ic001"
+      gcp_sites:
+        author: "ldominguez"
+        author_id: "ld001"
+  tasks:
+    # All items in dictionary
+    - debug:
+        msg: "{{ item }}"
+      with_dict: "{{ websites }}"
+
+    # Debug specific author
+    - debug:
+        msg: "{{ item.value.author }}"
+      with_dict: "{{ websites }}"
+
+    # Conditional
+    - debug:
+        msg: "{{ item.value.author }}"
+      with_dict: "{{ websites }}"
+      when: "item.value.author_id == 'fc001'"
+
+    # Debug specific author
+    - debug:
+        msg: "{{ item.key }}: {{ item.value }}"
+      with_dict: "{{ websites }}"
+      when: "item.value.author_id == 'ld001'"

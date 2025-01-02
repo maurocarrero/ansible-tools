@@ -1,0 +1,12 @@
+---
+  - name: "Challenge I"
+    hosts: localhost
+    tasks:
+      - name: "Test reachability"
+        ping:
+      - name: "Find PDF files in Downloads"
+        find:
+          paths: "~/Downloads"
+          file_type: "file"
+          use_regex: "yes"
+          patterns: [ "^.*\\.pdf$" ]
